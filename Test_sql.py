@@ -1,8 +1,12 @@
 import sqlite3
+import threading
 
 conn = sqlite3.connect('sellingitem.db', check_same_thread=False)
 
+mutex = threading.Lock()
+
 cur = conn.cursor()
+
 
 cur.execute(""" CREATE TABLE IF NOT EXISTS selling(
             Number_item TEXT,
@@ -17,6 +21,7 @@ conn.commit()
 
 
 def plus_data(data):
+    mutex.acquire()
     try:
         if data[0].isdigit():
             cur.execute(
@@ -27,16 +32,20 @@ def plus_data(data):
                 cur.execute(
                     f"INSERT INTO selling(Number_item, Price, Day, Month, Year, Delivery_price, Full_and_partial) VALUES(?, ?, ?, ?, ?, ?, ?)", data)
                 conn.commit()
+                mutex.release()
                 return True
             else:
+                mutex.release()
                 return False
         else:
             cur.execute(
                 f"INSERT INTO selling(Number_item, Price, Day, Month, Year, Delivery_price, Full_and_partial) VALUES(?, ?, ?, ?, ?, ?, ?)", data)
             conn.commit()
+            mutex.release()
             return True
     except sqlite3.Error as e:
         print('Все хуевое, а именно:', e)
+        mutex.release()
         return False
 
 

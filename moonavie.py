@@ -5,7 +5,7 @@ import time
 
 token_moonaviebot = '6243786271:AAFhj7aPcXma6O43E7AbT_hlxemEjMhLhRQ'
 token_debaggingbot = '6003425774:AAE0myNh7RrDQpFqCiYAHA1YVx6n02qgyWg'
-bot = telebot.TeleBot(token_moonaviebot)
+bot = telebot.TeleBot(token_debaggingbot)
 
 
 # Занесение данных о продаже
@@ -137,6 +137,7 @@ def get_text_messages(message):
 
     if Flag_item and Flag_price and Flag_date and Flag_commens:
         if Test_sql.plus_data(DATA_SQLite):
+            # time.sleep(1)
             bot.send_message(message.chat.id, "Успешно")
         else:
             bot.send_message(
@@ -174,7 +175,7 @@ def report_selling_month(message):
         if month.get(mess[1]) != None and mess[2].isdigit() and Year >= int(mess[2]):
             month_num = month[mess[1]]
             count_item, profin_month, delivery_month = Test_sql.report(
-                month_num, Year)
+                month_num, mess[2])
             if count_item > 0 and profin_month > 0:
                 bot.send_message(
                     message.from_user.id, f"Количество проданных лотов за {mess[1]} - {count_item}:\nна общую стоимость - {profin_month}\nна оплату доставок - {delivery_month}")
