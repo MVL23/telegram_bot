@@ -5,7 +5,7 @@ import time
 
 token_moonaviebot = '6243786271:AAFhj7aPcXma6O43E7AbT_hlxemEjMhLhRQ'
 token_debaggingbot = '6003425774:AAE0myNh7RrDQpFqCiYAHA1YVx6n02qgyWg'
-bot = telebot.TeleBot(token_debaggingbot)
+bot = telebot.TeleBot(token_moonaviebot)
 
 
 # Занесение данных о продаже
